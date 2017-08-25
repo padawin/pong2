@@ -4,6 +4,12 @@
 	let timePreviousFrame;
 	let resources = {};
 
+	let balls = [];
+	let targets = [];
+
+	const MIN_DIST_CLICK_TARGET = 20;
+	const MAX_TARGET_RADIUS = 30;
+
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
 
@@ -44,6 +50,31 @@
 	function initGame() {
 		timePreviousFrame = Date.now();
 		setEvents();
+		createBall();
+		createTarget(balls[0]);
+	}
+
+	function createBall() {
+		let ball = {
+			x: Math.random() * canvas.width,
+			y: Math.random() * canvas.height,
+			speed: 3,
+			direction: 0
+		};
+		balls.push(ball);
+	}
+
+	function createTarget(ball) {
+		let target;
+		do {
+			target = {
+				x: Math.random() * canvas.width,
+				y: Math.random() * canvas.height,
+				radius: 5,
+				expands: false
+			};
+		} while (Math.abs(target.x - ball.x) < canvas.width / 3);
+		targets.push(target);
 	}
 
 	function runGame() {
@@ -62,9 +93,34 @@
 	}
 
 	function update() {
+		// update ball
+		let speedVector = {
+			x: Math.cos(balls[0].direction) * balls[0].speed,
+			y: Math.sin(balls[0].direction) * balls[0].speed
+		};
+		balls[0].x = (balls[0].x + speedVector.x) % canvas.width;
+		balls[0].y = (balls[0].y + speedVector.y) % canvas.height;
+
+		// update target
+		if (targets[0].expands) {
+			targets[0].radius +=2;
+			if (targets[0].radius >= MAX_TARGET_RADIUS) {
+				targets.splice(0, 1);
+				createTarget(balls[0]);
+			}
+		}
 	}
 
 	function draw() {
+		context.clearRect(0, 0, canvas.width, canvas.height);
+
+		context.beginPath();
+		//draw ball
+		context.fillStyle = 'black';
+		context.arc(balls[0].x, balls[0].y, 20, 0, 2 * Math.PI, false);
+		//draw target
+		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
+		context.fill();
 	}
 
 	function setEvents() {
@@ -74,5 +130,10 @@
 	}
 
 	function click(x, y) {
+		if (Math.abs(x - targets[0].x) < MIN_DIST_CLICK_TARGET
+			&& Math.abs(y - targets[0].y) < MIN_DIST_CLICK_TARGET
+		) {
+			targets[0].expands = true;
+		}
 	}
 })();
