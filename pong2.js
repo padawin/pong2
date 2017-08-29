@@ -93,7 +93,13 @@
 	}
 
 	function update() {
-		// update ball
+		// update ball direction
+		balls[0].direction = Math.atan2(
+			targets[0].y - balls[0].y,
+			targets[0].x - balls[0].x
+		);
+
+		// update ball position
 		let speedVector = {
 			x: Math.cos(balls[0].direction) * balls[0].speed,
 			y: Math.sin(balls[0].direction) * balls[0].speed
