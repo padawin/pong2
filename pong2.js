@@ -9,6 +9,8 @@
 
 	const MIN_DIST_CLICK_TARGET = 20;
 	const MAX_TARGET_RADIUS = 30;
+	const BALL_CRUISE_SPEED = 3;
+	const BALL_ANGULAR_SPEED = 0.05;
 
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
@@ -58,7 +60,7 @@
 		let ball = {
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
-			speed: 3,
+			speed: BALL_CRUISE_SPEED,
 			direction: 0
 		};
 		balls.push(ball);
@@ -99,7 +101,7 @@
 			targets[0].x - balls[0].x
 		);
 		if (directionToBall != balls[0].direction) {
-			balls[0].direction += directionToBall > balls[0].direction ? 0.05 : -0.05;
+			balls[0].direction += directionToBall > balls[0].direction ? BALL_ANGULAR_SPEED : -BALL_ANGULAR_SPEED;
 		}
 
 		// update ball position
