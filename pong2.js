@@ -94,10 +94,13 @@
 
 	function update() {
 		// update ball direction
-		balls[0].direction = Math.atan2(
+		let directionToBall = Math.atan2(
 			targets[0].y - balls[0].y,
 			targets[0].x - balls[0].x
 		);
+		if (directionToBall != balls[0].direction) {
+			balls[0].direction += directionToBall > balls[0].direction ? 0.05 : -0.05;
+		}
 
 		// update ball position
 		let speedVector = {
