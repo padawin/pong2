@@ -10,6 +10,7 @@
 	const MIN_DIST_CLICK_TARGET = 20;
 	const MAX_TARGET_RADIUS = 30;
 	const BALL_CRUISE_SPEED = 3;
+	const BALL_MAX_BOOST_SPEED = 8;
 	const BALL_ANGULAR_SPEED = 0.05;
 
 	const MAX_FPS = 60,
@@ -61,7 +62,8 @@
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
 			speed: BALL_CRUISE_SPEED,
-			direction: 0
+			direction: 0,
+			boost: false
 		};
 		balls.push(ball);
 	}
@@ -104,6 +106,19 @@
 			balls[0].direction += directionToBall > balls[0].direction ? BALL_ANGULAR_SPEED : -BALL_ANGULAR_SPEED;
 		}
 
+		if (balls[0].boost) {
+			balls[0].speed += 0.4;
+		}
+		if (balls[0].speed > BALL_MAX_BOOST_SPEED) {
+			balls[0].boost = false;
+		}
+		if (!balls[0].boost && balls[0].speed > BALL_CRUISE_SPEED) {
+			balls[0].speed -= 0.1;
+		}
+		else if (balls[0].speed < BALL_CRUISE_SPEED) {
+			balls[0].speed = BALL_CRUISE_SPEED;
+		}
+
 		// update ball position
 		let speedVector = {
 			x: Math.cos(balls[0].direction) * balls[0].speed,
@@ -118,6 +133,7 @@
 			if (targets[0].radius >= MAX_TARGET_RADIUS) {
 				targets.splice(0, 1);
 				createTarget(balls[0]);
+				balls[0].boost = true;
 			}
 		}
 	}
