@@ -97,6 +97,12 @@
 	}
 
 	function update() {
+		updateBallDirection();
+		updateBallPosition();
+		updateTarget();
+	}
+
+	function updateBallDirection() {
 		// update ball direction
 		let directionToBall = Math.atan2(
 			targets[0].y - balls[0].y,
@@ -118,7 +124,9 @@
 		else if (balls[0].speed < BALL_CRUISE_SPEED) {
 			balls[0].speed = BALL_CRUISE_SPEED;
 		}
+	}
 
+	function updateBallPosition() {
 		// update ball position
 		let speedVector = {
 			x: Math.cos(balls[0].direction) * balls[0].speed,
@@ -126,7 +134,9 @@
 		};
 		balls[0].x = (balls[0].x + speedVector.x) % canvas.width;
 		balls[0].y = (balls[0].y + speedVector.y) % canvas.height;
+	}
 
+	function updateTarget() {
 		// update target
 		if (targets[0].expands) {
 			targets[0].radius +=2;
