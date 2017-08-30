@@ -63,6 +63,7 @@
 		let ball = {
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
+			radius:20,
 			speed: BALL_CRUISE_SPEED,
 			direction: 0,
 			boost: false
@@ -156,7 +157,7 @@
 		context.beginPath();
 		//draw ball
 		context.fillStyle = 'black';
-		context.arc(balls[0].x, balls[0].y, 20, 0, 2 * Math.PI, false);
+		context.arc(balls[0].x, balls[0].y, balls[0].radius, 0, 2 * Math.PI, false);
 		//draw target
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
