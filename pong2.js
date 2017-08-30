@@ -9,6 +9,9 @@
 
 	const MIN_DIST_CLICK_TARGET = 20;
 	const MAX_TARGET_RADIUS = 30;
+	const BALL_CRUISE_SPEED = 3;
+	const BALL_MAX_BOOST_SPEED = 8;
+	const BALL_ANGULAR_SPEED = 0.05;
 
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
@@ -58,8 +61,9 @@
 		let ball = {
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
-			speed: 3,
-			direction: 0
+			speed: BALL_CRUISE_SPEED,
+			direction: 0,
+			boost: false
 		};
 		balls.push(ball);
 	}
@@ -93,20 +97,53 @@
 	}
 
 	function update() {
-		// update ball
+		updateBallDirection();
+		updateBallPosition();
+		updateTarget();
+	}
+
+	function updateBallDirection() {
+		// update ball direction
+		let directionToBall = (2 * Math.PI + Math.atan2(
+			targets[0].y - balls[0].y,
+			targets[0].x - balls[0].x
+		)) % (2 * Math.PI);
+		if (directionToBall != balls[0].direction) {
+			balls[0].direction += directionToBall > balls[0].direction ? BALL_ANGULAR_SPEED : -BALL_ANGULAR_SPEED;
+		}
+
+		if (balls[0].boost) {
+			balls[0].speed += 0.4;
+		}
+		if (balls[0].speed > BALL_MAX_BOOST_SPEED) {
+			balls[0].boost = false;
+		}
+		if (!balls[0].boost && balls[0].speed > BALL_CRUISE_SPEED) {
+			balls[0].speed -= 0.1;
+		}
+		else if (balls[0].speed < BALL_CRUISE_SPEED) {
+			balls[0].speed = BALL_CRUISE_SPEED;
+		}
+	}
+
+	function updateBallPosition() {
+		// update ball position
 		let speedVector = {
 			x: Math.cos(balls[0].direction) * balls[0].speed,
 			y: Math.sin(balls[0].direction) * balls[0].speed
 		};
-		balls[0].x = (balls[0].x + speedVector.x) % canvas.width;
-		balls[0].y = (balls[0].y + speedVector.y) % canvas.height;
+		balls[0].x = (canvas.width + balls[0].x + speedVector.x) % canvas.width;
+		balls[0].y = (canvas.height + balls[0].y + speedVector.y) % canvas.height;
+	}
 
+	function updateTarget() {
 		// update target
 		if (targets[0].expands) {
 			targets[0].radius +=2;
 			if (targets[0].radius >= MAX_TARGET_RADIUS) {
 				targets.splice(0, 1);
 				createTarget(balls[0]);
+				balls[0].boost = true;
 			}
 		}
 	}
@@ -121,6 +158,19 @@
 		//draw target
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
+
+		// draw speed vector
+		if (__DEBUG__) {
+			let speedVector = {
+				x: Math.cos(balls[0].direction) * balls[0].speed * 10,
+				y: Math.sin(balls[0].direction) * balls[0].speed * 10
+			};
+			context.beginPath();
+			context.moveTo(balls[0].x, balls[0].y);
+			context.strokeStyle = 'red';
+			context.lineTo(balls[0].x + speedVector.x, balls[0].y + speedVector.y);
+			context.stroke();
+		}
 	}
 
 	function setEvents() {
