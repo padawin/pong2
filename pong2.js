@@ -4,6 +4,8 @@
 	let timePreviousFrame;
 	let resources = {};
 
+	let __DEBUG__ = false;
+
 	let balls = [];
 	let targets = [];
 
