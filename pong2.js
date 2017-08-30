@@ -4,6 +4,8 @@
 	let timePreviousFrame;
 	let resources = {};
 
+	let __DEBUG__ = false;
+
 	let balls = [];
 	let targets = [];
 
@@ -61,9 +63,12 @@
 		let ball = {
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
+			radius:20,
 			speed: BALL_CRUISE_SPEED,
 			direction: 0,
-			boost: false
+			boost: false,
+			frozen: false,
+			frozenCountDown: 0
 		};
 		balls.push(ball);
 	}
@@ -97,9 +102,22 @@
 	}
 
 	function update() {
+		updateBallFrozen();
 		updateBallDirection();
 		updateBallPosition();
 		updateTarget();
+
+		testCollision();
+	}
+
+	function updateBallFrozen() {
+		if (balls[0].frozen) {
+			balls[0].frozenCountDown--;
+			if (balls[0].frozenCountDown <= 0) {
+				balls[0].frozenCountDown = 0;
+				balls[0].frozen = false;
+			}
+		}
 	}
 
 	function updateBallDirection() {
@@ -148,13 +166,36 @@
 		}
 	}
 
+	function testCollision() {
+		if (balls[0].frozen) {
+			return;
+		}
+
+		let distanceBallTarget = Math.sqrt(
+			Math.pow(targets[0].y - balls[0].y, 2) +
+			Math.pow(targets[0].x - balls[0].x, 2)
+		);
+
+		if (distanceBallTarget < targets[0].radius + balls[0].radius) {
+			if (targets[0].expands) {
+				balls[0].direction = (balls[0].direction + Math.PI) % (Math.PI * 2)
+				balls[0].frozen = true;
+				balls[0].frozenCountDown = 60;
+			}
+			else {
+				targets.splice(0, 1);
+				createTarget(balls[0]);
+			}
+		}
+	}
+
 	function draw() {
 		context.clearRect(0, 0, canvas.width, canvas.height);
 
 		context.beginPath();
 		//draw ball
 		context.fillStyle = 'black';
-		context.arc(balls[0].x, balls[0].y, 20, 0, 2 * Math.PI, false);
+		context.arc(balls[0].x, balls[0].y, balls[0].radius, 0, 2 * Math.PI, false);
 		//draw target
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
