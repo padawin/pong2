@@ -103,6 +103,8 @@
 		updateBallDirection();
 		updateBallPosition();
 		updateTarget();
+
+		testCollision();
 	}
 
 	function updateBallDirection() {
@@ -147,6 +149,23 @@
 				targets.splice(0, 1);
 				createTarget(balls[0]);
 				balls[0].boost = true;
+			}
+		}
+	}
+
+	function testCollision() {
+		let distanceBallTarget = Math.sqrt(
+			Math.pow(targets[0].y - balls[0].y, 2) +
+			Math.pow(targets[0].x - balls[0].x, 2)
+		);
+
+		if (distanceBallTarget < targets[0].radius + balls[0].radius) {
+			if (targets[0].expands) {
+				balls[0].direction = (balls[0].direction + Math.PI) % (Math.PI * 2)
+			}
+			else {
+				targets.splice(0, 1);
+				createTarget(balls[0]);
 			}
 		}
 	}
