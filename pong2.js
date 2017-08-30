@@ -104,10 +104,10 @@
 
 	function updateBallDirection() {
 		// update ball direction
-		let directionToBall = Math.atan2(
+		let directionToBall = (2 * Math.PI + Math.atan2(
 			targets[0].y - balls[0].y,
 			targets[0].x - balls[0].x
-		);
+		)) % (2 * Math.PI);
 		if (directionToBall != balls[0].direction) {
 			balls[0].direction += directionToBall > balls[0].direction ? BALL_ANGULAR_SPEED : -BALL_ANGULAR_SPEED;
 		}
@@ -132,8 +132,8 @@
 			x: Math.cos(balls[0].direction) * balls[0].speed,
 			y: Math.sin(balls[0].direction) * balls[0].speed
 		};
-		balls[0].x = (balls[0].x + speedVector.x) % canvas.width;
-		balls[0].y = (balls[0].y + speedVector.y) % canvas.height;
+		balls[0].x = (canvas.width + balls[0].x + speedVector.x) % canvas.width;
+		balls[0].y = (canvas.height + balls[0].y + speedVector.y) % canvas.height;
 	}
 
 	function updateTarget() {
