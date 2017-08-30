@@ -158,6 +158,19 @@
 		//draw target
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
+
+		// draw speed vector
+		if (__DEBUG__) {
+			let speedVector = {
+				x: Math.cos(balls[0].direction) * balls[0].speed * 10,
+				y: Math.sin(balls[0].direction) * balls[0].speed * 10
+			};
+			context.beginPath();
+			context.moveTo(balls[0].x, balls[0].y);
+			context.strokeStyle = 'red';
+			context.lineTo(balls[0].x + speedVector.x, balls[0].y + speedVector.y);
+			context.stroke();
+		}
 	}
 
 	function setEvents() {
