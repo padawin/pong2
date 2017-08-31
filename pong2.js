@@ -196,6 +196,19 @@
 		//draw ball
 		drawBall(balls[0], balls[0].x, balls[0].y);
 
+		if (balls[0].x < balls[0].radius) {
+			drawBall(balls[0], balls[0].x + canvas.width, balls[0].y);
+		}
+		if (balls[0].x + balls[0].radius > canvas.width) {
+			drawBall(balls[0], balls[0].x - canvas.width, balls[0].y);
+		}
+		if (balls[0].y < balls[0].radius) {
+			drawBall(balls[0], balls[0].x, balls[0].y + canvas.height);
+		}
+		if (balls[0].y + balls[0].radius > canvas.height) {
+			drawBall(balls[0], balls[0].x, balls[0].y - canvas.height);
+		}
+
 		//draw target
 		context.moveTo(targets[0].x, targets[0].y);
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
