@@ -125,6 +125,7 @@ function (B, canvas, screenSize, Ball, settings) {
 		context.moveTo(targets[0].x, targets[0].y);
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
+		context.stroke();
 	}
 
 	function setEvents() {

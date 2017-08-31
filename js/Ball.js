@@ -12,11 +12,9 @@ loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
 				x: Math.cos(ball.direction) * ball.speed * 10,
 				y: Math.sin(ball.direction) * ball.speed * 10
 			};
-			context.beginPath();
 			context.moveTo(ball.x, ball.y);
 			context.strokeStyle = 'red';
 			context.lineTo(ball.x + speedVector.x, ball.y + speedVector.y);
-			context.stroke();
 		}
 	}
 
