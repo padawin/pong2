@@ -194,9 +194,10 @@
 
 		context.beginPath();
 		//draw ball
-		context.fillStyle = 'black';
-		context.arc(balls[0].x, balls[0].y, balls[0].radius, 0, 2 * Math.PI, false);
+		drawBall(balls[0], balls[0].x, balls[0].y);
+
 		//draw target
+		context.moveTo(targets[0].x, targets[0].y);
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
 
@@ -212,6 +213,13 @@
 			context.lineTo(balls[0].x + speedVector.x, balls[0].y + speedVector.y);
 			context.stroke();
 		}
+	}
+
+	function drawBall(ball, x, y) {
+		//draw ball
+		context.fillStyle = 'black';
+		context.moveTo(x, y);
+		context.arc(x, y, ball.radius, 0, 2 * Math.PI, false);
 	}
 
 	function setEvents() {
