@@ -63,7 +63,7 @@
 		let ball = {
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
-			radius:20,
+			radius: 20,
 			speed: BALL_CRUISE_SPEED,
 			direction: 0,
 			boost: false,
@@ -83,6 +83,9 @@
 				expands: false
 			};
 		} while (Math.abs(target.x - ball.x) < canvas.width / 3);
+
+		target.x = Math.max(30, Math.min(target.x, canvas.width - 30));
+		target.y = Math.max(30, Math.min(target.y, canvas.height - 30));
 		targets.push(target);
 	}
 
@@ -194,9 +197,23 @@
 
 		context.beginPath();
 		//draw ball
-		context.fillStyle = 'black';
-		context.arc(balls[0].x, balls[0].y, balls[0].radius, 0, 2 * Math.PI, false);
+		drawBall(balls[0], balls[0].x, balls[0].y);
+
+		if (balls[0].x < balls[0].radius) {
+			drawBall(balls[0], balls[0].x + canvas.width, balls[0].y);
+		}
+		if (balls[0].x + balls[0].radius > canvas.width) {
+			drawBall(balls[0], balls[0].x - canvas.width, balls[0].y);
+		}
+		if (balls[0].y < balls[0].radius) {
+			drawBall(balls[0], balls[0].x, balls[0].y + canvas.height);
+		}
+		if (balls[0].y + balls[0].radius > canvas.height) {
+			drawBall(balls[0], balls[0].x, balls[0].y - canvas.height);
+		}
+
 		//draw target
+		context.moveTo(targets[0].x, targets[0].y);
 		context.arc(targets[0].x, targets[0].y, targets[0].radius, 0, 2 * Math.PI, false);
 		context.fill();
 
@@ -212,6 +229,13 @@
 			context.lineTo(balls[0].x + speedVector.x, balls[0].y + speedVector.y);
 			context.stroke();
 		}
+	}
+
+	function drawBall(ball, x, y) {
+		//draw ball
+		context.fillStyle = 'black';
+		context.moveTo(x, y);
+		context.arc(x, y, ball.radius, 0, 2 * Math.PI, false);
 	}
 
 	function setEvents() {
