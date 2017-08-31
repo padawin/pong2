@@ -1,4 +1,7 @@
-(function () {
+loader.executeModule('main',
+function () {
+	"use strict";
+
 	let canvas = document.getElementById("game");
 	let context = canvas.getContext("2d");
 	let timePreviousFrame;
@@ -251,4 +254,4 @@
 			targets[0].expands = true;
 		}
 	}
-})();
+});
