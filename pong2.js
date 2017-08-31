@@ -83,6 +83,9 @@
 				expands: false
 			};
 		} while (Math.abs(target.x - ball.x) < canvas.width / 3);
+
+		target.x = Math.max(30, Math.min(target.x, canvas.width - 30));
+		target.y = Math.max(30, Math.min(target.y, canvas.height - 30));
 		targets.push(target);
 	}
 
