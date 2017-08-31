@@ -1,7 +1,7 @@
 var __DEBUG__ = false;
 loader.executeModule('main',
-'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings',
-function (B, canvas, screenSize, Ball, Target, settings) {
+'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings', 'resourceManager',
+function (B, canvas, screenSize, Ball, Target, settings, resourceManager) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -14,39 +14,10 @@ function (B, canvas, screenSize, Ball, Target, settings) {
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
 
-	loadResources(function() {
+	resourceManager.load(function() {
 		initGame();
 		runGame();
 	});
-
-	function loadResources(callback) {
-		let resourcesData = [
-		];
-		var nbResources = resourcesData.length,
-			loaded = 0;
-
-		function onLoadResource () {
-			loaded++;
-
-			if (loaded == nbResources) {
-				console.log("All resources loaded");
-				callback();
-			}
-		}
-
-		if (!nbResources) {
-			callback();
-			return;
-		}
-
-		for (let r in resourcesData) {
-			console.log("load " + resourcesData[r].url);
-			let img = new Image();
-			img.onload = onLoadResource;
-			img.src = resourcesData[r].url;
-			resources[resourcesData[r].name] = {'img': img};
-		}
-	}
 
 	function initGame() {
 		canvas.resize(screenSize.get());
