@@ -1,6 +1,6 @@
 loader.executeModule('main',
-'B', 'canvas', 'screenSize',
-function (B, canvas, screenSize) {
+'B', 'canvas', 'screenSize', 'settings',
+function (B, canvas, screenSize, settings) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -11,12 +11,6 @@ function (B, canvas, screenSize) {
 
 	let balls = [];
 	let targets = [];
-
-	const MIN_DIST_CLICK_TARGET = 20;
-	const MAX_TARGET_RADIUS = 30;
-	const BALL_CRUISE_SPEED = 3;
-	const BALL_MAX_BOOST_SPEED = 8;
-	const BALL_ANGULAR_SPEED = 0.05;
 
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
@@ -68,7 +62,7 @@ function (B, canvas, screenSize) {
 			x: Math.random() * canvas.getWidth(),
 			y: Math.random() * canvas.getHeight(),
 			radius: 20,
-			speed: BALL_CRUISE_SPEED,
+			speed: settings.BALL_CRUISE_SPEED,
 			direction: 0,
 			boost: false,
 			frozen: false,
@@ -134,20 +128,20 @@ function (B, canvas, screenSize) {
 			targets[0].x - balls[0].x
 		)) % (2 * Math.PI);
 		if (directionToBall != balls[0].direction) {
-			balls[0].direction += directionToBall > balls[0].direction ? BALL_ANGULAR_SPEED : -BALL_ANGULAR_SPEED;
+			balls[0].direction += directionToBall > balls[0].direction ? settings.BALL_ANGULAR_SPEED : -settings.BALL_ANGULAR_SPEED;
 		}
 
 		if (balls[0].boost) {
 			balls[0].speed += 0.4;
 		}
-		if (balls[0].speed > BALL_MAX_BOOST_SPEED) {
+		if (balls[0].speed > settings.BALL_MAX_BOOST_SPEED) {
 			balls[0].boost = false;
 		}
-		if (!balls[0].boost && balls[0].speed > BALL_CRUISE_SPEED) {
+		if (!balls[0].boost && balls[0].speed > settings.BALL_CRUISE_SPEED) {
 			balls[0].speed -= 0.1;
 		}
-		else if (balls[0].speed < BALL_CRUISE_SPEED) {
-			balls[0].speed = BALL_CRUISE_SPEED;
+		else if (balls[0].speed < settings.BALL_CRUISE_SPEED) {
+			balls[0].speed = settings.BALL_CRUISE_SPEED;
 		}
 	}
 
@@ -165,7 +159,7 @@ function (B, canvas, screenSize) {
 		// update target
 		if (targets[0].expands) {
 			targets[0].radius +=2;
-			if (targets[0].radius >= MAX_TARGET_RADIUS) {
+			if (targets[0].radius >= settings.MAX_TARGET_RADIUS) {
 				targets.splice(0, 1);
 				createTarget(balls[0]);
 				balls[0].boost = true;
@@ -247,8 +241,8 @@ function (B, canvas, screenSize) {
 	}
 
 	function click(x, y) {
-		if (Math.abs(x - targets[0].x) < MIN_DIST_CLICK_TARGET
-			&& Math.abs(y - targets[0].y) < MIN_DIST_CLICK_TARGET
+		if (Math.abs(x - targets[0].x) < settings.MIN_DIST_CLICK_TARGET
+			&& Math.abs(y - targets[0].y) < settings.MIN_DIST_CLICK_TARGET
 		) {
 			targets[0].expands = true;
 		}
