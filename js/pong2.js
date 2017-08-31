@@ -1,9 +1,9 @@
 loader.executeModule('main',
-function () {
+'B', 'canvas',
+function (B, canvas) {
 	"use strict";
 
-	let canvas = document.getElementById("game");
-	let context = canvas.getContext("2d");
+	let context = canvas.getContext();
 	let timePreviousFrame;
 	let resources = {};
 
@@ -64,8 +64,8 @@ function () {
 
 	function createBall() {
 		let ball = {
-			x: Math.random() * canvas.width,
-			y: Math.random() * canvas.height,
+			x: Math.random() * canvas.getWidth(),
+			y: Math.random() * canvas.getHeight(),
 			radius: 20,
 			speed: BALL_CRUISE_SPEED,
 			direction: 0,
@@ -80,15 +80,15 @@ function () {
 		let target;
 		do {
 			target = {
-				x: Math.random() * canvas.width,
-				y: Math.random() * canvas.height,
+				x: Math.random() * canvas.getWidth(),
+				y: Math.random() * canvas.getHeight(),
 				radius: 5,
 				expands: false
 			};
-		} while (Math.abs(target.x - ball.x) < canvas.width / 3);
+		} while (Math.abs(target.x - ball.x) < canvas.getWidth() / 3);
 
-		target.x = Math.max(30, Math.min(target.x, canvas.width - 30));
-		target.y = Math.max(30, Math.min(target.y, canvas.height - 30));
+		target.x = Math.max(30, Math.min(target.x, canvas.getWidth() - 30));
+		target.y = Math.max(30, Math.min(target.y, canvas.getHeight() - 30));
 		targets.push(target);
 	}
 
@@ -156,8 +156,8 @@ function () {
 			x: Math.cos(balls[0].direction) * balls[0].speed,
 			y: Math.sin(balls[0].direction) * balls[0].speed
 		};
-		balls[0].x = (canvas.width + balls[0].x + speedVector.x) % canvas.width;
-		balls[0].y = (canvas.height + balls[0].y + speedVector.y) % canvas.height;
+		balls[0].x = (canvas.getWidth() + balls[0].x + speedVector.x) % canvas.getWidth();
+		balls[0].y = (canvas.getHeight() + balls[0].y + speedVector.y) % canvas.getHeight();
 	}
 
 	function updateTarget() {
@@ -196,23 +196,23 @@ function () {
 	}
 
 	function draw() {
-		context.clearRect(0, 0, canvas.width, canvas.height);
+		context.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
 
 		context.beginPath();
 		//draw ball
 		drawBall(balls[0], balls[0].x, balls[0].y);
 
 		if (balls[0].x < balls[0].radius) {
-			drawBall(balls[0], balls[0].x + canvas.width, balls[0].y);
+			drawBall(balls[0], balls[0].x + canvas.getWidth(), balls[0].y);
 		}
-		if (balls[0].x + balls[0].radius > canvas.width) {
-			drawBall(balls[0], balls[0].x - canvas.width, balls[0].y);
+		if (balls[0].x + balls[0].radius > canvas.getWidth()) {
+			drawBall(balls[0], balls[0].x - canvas.getWidth(), balls[0].y);
 		}
 		if (balls[0].y < balls[0].radius) {
-			drawBall(balls[0], balls[0].x, balls[0].y + canvas.height);
+			drawBall(balls[0], balls[0].x, balls[0].y + canvas.getHeight());
 		}
-		if (balls[0].y + balls[0].radius > canvas.height) {
-			drawBall(balls[0], balls[0].x, balls[0].y - canvas.height);
+		if (balls[0].y + balls[0].radius > canvas.getHeight()) {
+			drawBall(balls[0], balls[0].x, balls[0].y - canvas.getHeight());
 		}
 
 		//draw target
@@ -242,9 +242,7 @@ function () {
 	}
 
 	function setEvents() {
-		canvas.addEventListener("click", function(e) {
-			click(e.clientX, e.clientY);
-		});
+		B.Events.on('click', null, click);
 	}
 
 	function click(x, y) {
