@@ -1,6 +1,6 @@
 loader.executeModule('main',
-'B', 'canvas',
-function (B, canvas) {
+'B', 'canvas', 'screenSize',
+function (B, canvas, screenSize) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -56,6 +56,7 @@ function (B, canvas) {
 	}
 
 	function initGame() {
+		canvas.resize(screenSize.get());
 		timePreviousFrame = Date.now();
 		setEvents();
 		createBall();
