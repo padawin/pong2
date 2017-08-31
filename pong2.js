@@ -63,7 +63,7 @@
 		let ball = {
 			x: Math.random() * canvas.width,
 			y: Math.random() * canvas.height,
-			radius:20,
+			radius: 20,
 			speed: BALL_CRUISE_SPEED,
 			direction: 0,
 			boost: false,
