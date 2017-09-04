@@ -83,8 +83,9 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager) {
 	}
 
 	function click(x, y) {
-		if (Math.abs(x - targets[0].x) < settings.MIN_DIST_CLICK_TARGET
-			&& Math.abs(y - targets[0].y) < settings.MIN_DIST_CLICK_TARGET
+		if (settings.options.clickAnywhere
+			|| Math.abs(x - targets[0].x) < settings.MIN_DIST_CLICK_TARGET
+			   && Math.abs(y - targets[0].y) < settings.MIN_DIST_CLICK_TARGET
 		) {
 			targets[0].expands = true;
 		}
