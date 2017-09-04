@@ -3,7 +3,8 @@ loader.addModule('settings', function () {
 
 	return {
 		options: {
-			clickAnywhere: true
+			clickAnywhere: true,
+			wallBoundaries: true
 		},
 		MIN_DIST_CLICK_TARGET: 50,
 		MAX_TARGET_RADIUS: 30,

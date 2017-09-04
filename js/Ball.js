@@ -124,6 +124,9 @@ loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
 				}
 			};
 
+			ball.bounce = function (way) {
+			};
+
 			return ball;
 		}
 	};
