@@ -115,7 +115,7 @@ loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
 
 					if (distanceBallTarget < target.radius + ball.radius) {
 						if (target.expands) {
-							ball.direction = (ball.direction + Math.PI) % (Math.PI * 2)
+							ball.direction = (ball.direction + Math.PI) % (Math.PI * 2);
 							ball.frozen = true;
 							ball.frozenCountDown = 60;
 						}
