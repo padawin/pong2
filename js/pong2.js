@@ -1,7 +1,8 @@
-var __DEBUG__ = false;
+var __DEBUG__ = true;
 loader.executeModule('main',
 'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings', 'resourceManager', 'wall',
-function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall) {
+'debug',
+function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, debug) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -47,6 +48,7 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall) 
 
 			update();
 			draw();
+			debug.processDebug();
 		}
 	}
 

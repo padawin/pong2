@@ -1,21 +1,13 @@
-loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
+loader.addModule('Ball',
+'settings', 'canvas', 'debug',
+function (settings, canvas, debug) {
 	"use strict";
 
 	function _draw(x, y, radius) {
+		canvas.getContext().strokeStyle = 'black';
 		canvas.getContext().fillStyle = 'black';
 		canvas.getContext().moveTo(x, y);
 		canvas.getContext().arc(x, y, radius, 0, 2 * Math.PI, false);
-
-		// draw speed vector
-		if (__DEBUG__) {
-			let speedVector = {
-				x: Math.cos(ball.direction) * ball.speed * 10,
-				y: Math.sin(ball.direction) * ball.speed * 10
-			};
-			context.moveTo(ball.x, ball.y);
-			context.strokeStyle = 'red';
-			context.lineTo(ball.x + speedVector.x, ball.y + speedVector.y);
-		}
 	}
 
 	function _findClosestTarget(ball, targets) {
@@ -38,6 +30,19 @@ loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
 			target.y - ball.y,
 			target.x - ball.x
 		)) % (2 * Math.PI);
+		if (__DEBUG__) {
+			debug.pushDebug(debug.TYPE_DRAW, function (context) {
+				let speedVector = {
+					x: Math.cos(directionToBall) * ball.speed * 20,
+					y: Math.sin(directionToBall) * ball.speed * 20
+				};
+				context.beginPath();
+				context.moveTo(ball.x, ball.y);
+				context.strokeStyle = 'blue';
+				context.lineTo(ball.x + speedVector.x, ball.y + speedVector.y);
+				context.stroke();
+			});
+		}
 		if (directionToBall != ball.direction) {
 			ball.direction += directionToBall > ball.direction ? settings.BALL_ANGULAR_SPEED : -settings.BALL_ANGULAR_SPEED;
 		}
@@ -83,6 +88,21 @@ loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
 				_updateFrozen(ball);
 				_updateDirection(ball, targets);
 				_updatePosition(ball);
+
+				// draw speed vector
+				if (__DEBUG__) {
+					debug.pushDebug(debug.TYPE_DRAW, function (context) {
+						let speedVector = {
+							x: Math.cos(ball.direction) * ball.speed * 20,
+							y: Math.sin(ball.direction) * ball.speed * 20
+						};
+						context.beginPath();
+						context.moveTo(ball.x, ball.y);
+						context.strokeStyle = 'red';
+						context.lineTo(ball.x + speedVector.x, ball.y + speedVector.y);
+						context.stroke();
+					});
+				}
 			};
 
 			ball.draw = function () {
