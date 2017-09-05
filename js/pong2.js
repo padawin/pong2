@@ -1,4 +1,4 @@
-var __DEBUG__ = true;
+var __DEBUG__ = false;
 loader.executeModule('main',
 'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings', 'resourceManager', 'wall',
 'debug',
