@@ -51,6 +51,10 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall) 
 	}
 
 	function update() {
+		let ballOldPosition = {
+			x: balls[0].x,
+			y: balls[0].y
+		};
 		balls[0].update(targets);
 		let targetDies = targets[0].update();
 		if (targetDies) {
@@ -70,6 +74,8 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall) 
 			// -1 if collision horizontal wall
 			let way = wall.ballIsColliding(balls[0]);
 			if (way) {
+				balls[0].x = ballOldPosition.x;
+				balls[0].y = ballOldPosition.y;
 				balls[0].bounce(way);
 			}
 		}
