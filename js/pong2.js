@@ -1,7 +1,7 @@
 var __DEBUG__ = false;
 loader.executeModule('main',
-'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings', 'resourceManager',
-function (B, canvas, screenSize, Ball, Target, settings, resourceManager) {
+'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings', 'resourceManager', 'wall',
+function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -51,6 +51,10 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager) {
 	}
 
 	function update() {
+		let ballOldPosition = {
+			x: balls[0].x,
+			y: balls[0].y
+		};
 		balls[0].update(targets);
 		let targetDies = targets[0].update();
 		if (targetDies) {
@@ -64,6 +68,17 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager) {
 			targets.splice(0, 1);
 			createTarget(balls[0]);
 		}
+		else if (settings.options.wallBoundaries) {
+			// 0 if no collision,
+			// 1 if collision vertical wall
+			// -1 if collision horizontal wall
+			let way = wall.ballIsColliding(balls[0]);
+			if (way) {
+				balls[0].x = ballOldPosition.x;
+				balls[0].y = ballOldPosition.y;
+				balls[0].bounce(way);
+			}
+		}
 	}
 
 	function draw() {
@@ -73,6 +88,10 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager) {
 		//draw ball
 		balls[0].draw();
 		targets[0].draw();
+
+		if (settings.options.wallBoundaries) {
+			wall.draw();
+		}
 
 		context.fill();
 		context.stroke();

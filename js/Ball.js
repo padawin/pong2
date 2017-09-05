@@ -115,13 +115,28 @@ loader.addModule('Ball', 'settings', 'canvas', function (settings, canvas) {
 
 					if (distanceBallTarget < target.radius + ball.radius) {
 						if (target.expands) {
-							ball.direction = (ball.direction + Math.PI) % (Math.PI * 2)
+							ball.direction = (ball.direction + Math.PI) % (Math.PI * 2);
 							ball.frozen = true;
 							ball.frozenCountDown = 60;
 						}
 						return target;
 					}
 				}
+			};
+
+			ball.bounce = function (way) {
+				let speedVector = {
+					x: ball.speed * Math.cos(ball.direction),
+					y: ball.speed * Math.sin(ball.direction)
+				};
+				if (way == -1) {
+					speedVector.y *= -1;
+				}
+				else if (way == 1) {
+					speedVector.x *= -1;
+				}
+
+				ball.direction = Math.atan2(speedVector.y, speedVector.x);
 			};
 
 			return ball;
