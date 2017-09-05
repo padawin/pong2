@@ -43,8 +43,13 @@ function (settings, canvas, debug) {
 				context.stroke();
 			});
 		}
-		if (directionToBall != ball.direction) {
+
+		if (Math.abs(directionToBall - ball.direction) < settings.BALL_ANGULAR_SPEED) {
+			ball.direction = directionToBall;
+		}
+		else if (directionToBall != ball.direction) {
 			ball.direction += directionToBall > ball.direction ? settings.BALL_ANGULAR_SPEED : -settings.BALL_ANGULAR_SPEED;
+			ball.direction = (Math.PI * 2 + ball.direction) % (Math.PI * 2)
 		}
 
 		if (ball.boost) {
