@@ -1,4 +1,4 @@
-loader.addModule('Target', 'canvas', 'settings', function (canvas, settings) {
+loader.addModule('Target', 'B', 'canvas', 'settings', function (B, canvas, settings) {
 	"use strict";
 
 	let Target = {
@@ -13,15 +13,12 @@ loader.addModule('Target', 'canvas', 'settings', function (canvas, settings) {
 			target.y = Math.max(30, Math.min(target.y, canvas.getHeight() - 30));
 
 			target.update = function (targets) {
-				let dies = false;
 				if (target.expands) {
 					target.radius +=2;
 					if (target.radius >= settings.MAX_TARGET_RADIUS) {
-						dies = true;
+						B.Events.fire('targetDisappeared', [target]);
 					}
 				}
-
-				return dies;
 			};
 
 			target.draw = function () {
