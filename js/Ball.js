@@ -97,7 +97,7 @@ function (settings, canvas, debug, wall) {
 				y: y,
 				radius: radius,
 				speed: settings.BALL_CRUISE_SPEED,
-				direction: 0,
+				direction: Math.random() * (Math.PI * 2),
 				boost: false,
 				frozen: false,
 				frozenCountDown: 0
