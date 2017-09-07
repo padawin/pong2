@@ -4,8 +4,10 @@ loader.addModule('settings', function () {
 	return {
 		options: {
 			clickAnywhere: true,
-			wallBoundaries: true
 		},
+		wallBoundaries: false,
+		PROBA_ENABLE_WALLS: 0.8,
+		DURATION_WALLS: 30000,
 		MIN_DIST_CLICK_TARGET: 50,
 		MAX_TARGET_RADIUS: 30,
 		BALL_CRUISE_SPEED: 3,

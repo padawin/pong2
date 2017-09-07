@@ -77,7 +77,7 @@ function (settings, canvas, debug, wall, B) {
 		create: function () {
 			let radius = 20;
 			let min;
-			if (settings.options.wallBoundaries) {
+			if (settings.wallBoundaries) {
 				min = wall.THICKNESS + radius;
 			}
 			else {
