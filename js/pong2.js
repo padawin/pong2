@@ -69,6 +69,7 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		if (collidedTarget) {
 			targets.splice(0, 1);
 			createTarget(balls[0]);
+			balls[0].boost = true;
 		}
 		else if (settings.options.wallBoundaries) {
 			// 0 if no collision,
