@@ -1,6 +1,6 @@
 loader.addModule('Ball',
-'settings', 'canvas', 'debug', 'wall',
-function (settings, canvas, debug, wall) {
+'settings', 'canvas', 'debug', 'wall', 'B',
+function (settings, canvas, debug, wall, B) {
 	"use strict";
 
 	function _draw(x, y, radius) {
@@ -135,7 +135,7 @@ function (settings, canvas, debug, wall) {
 				}
 			};
 
-			ball.isColliding = function (targets) {
+			ball.testCollision = function (targets) {
 				for (let target of targets) {
 					let distanceBallTarget = Math.sqrt(
 						Math.pow(target.y - ball.y, 2) +
@@ -146,7 +146,7 @@ function (settings, canvas, debug, wall) {
 						if (target.expands) {
 							ball.direction = (ball.direction + Math.PI) % (Math.PI * 2);
 						}
-						return target;
+						B.Events.fire('targetCollided', [target]);
 					}
 				}
 			};
