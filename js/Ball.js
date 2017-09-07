@@ -44,11 +44,18 @@ function (settings, canvas, debug, wall) {
 			});
 		}
 
-		if (Math.abs(directionToBall - ball.direction) < settings.BALL_ANGULAR_SPEED) {
+		let deltaDirections = directionToBall - ball.direction;
+		if (Math.abs(deltaDirections) < settings.BALL_ANGULAR_SPEED) {
 			ball.direction = directionToBall;
 		}
 		else if (directionToBall != ball.direction) {
-			ball.direction += directionToBall > ball.direction ? settings.BALL_ANGULAR_SPEED : -settings.BALL_ANGULAR_SPEED;
+			// find the smallest angle change to go to the ball
+			if (deltaDirections > Math.PI || deltaDirections > -Math.PI && deltaDirections < 0) {
+				ball.direction -= settings.BALL_ANGULAR_SPEED;
+			}
+			else {
+				ball.direction += settings.BALL_ANGULAR_SPEED;
+			}
 			ball.direction = (Math.PI * 2 + ball.direction) % (Math.PI * 2)
 		}
 
