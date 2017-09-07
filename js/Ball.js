@@ -1,6 +1,6 @@
 loader.addModule('Ball',
-'settings', 'canvas', 'debug',
-function (settings, canvas, debug) {
+'settings', 'canvas', 'debug', 'wall',
+function (settings, canvas, debug, wall) {
 	"use strict";
 
 	function _draw(x, y, radius) {
@@ -78,12 +78,26 @@ function (settings, canvas, debug) {
 
 	let Ball = {
 		create: function () {
+			let radius = 20;
+			let min;
+			if (settings.options.wallBoundaries) {
+				min = wall.THICKNESS + radius;
+			}
+			else {
+				min = radius;
+			}
+			let maxX = canvas.getWidth() - min;
+			let maxY = canvas.getHeight() - min;
+			let x = Math.random() * (maxX - min + 1);
+			let y = Math.random() * (maxY - min + 1);
+			x += min;
+			y += min;
 			let ball = {
-				x: Math.random() * canvas.getWidth(),
-				y: Math.random() * canvas.getHeight(),
-				radius: 20,
+				x: x,
+				y: y,
+				radius: radius,
 				speed: settings.BALL_CRUISE_SPEED,
-				direction: 0,
+				direction: Math.random() * (Math.PI * 2),
 				boost: false,
 				frozen: false,
 				frozenCountDown: 0

@@ -1,17 +1,16 @@
 loader.addModule('wall', 'canvas', function (canvas) {
 	"use strict";
 
-	const THICKNESS = 7;
-
 	let wall = {
+		THICKNESS: 7,
 		ballIsColliding: function (ball) {
-			if (ball.x <= ball.radius + THICKNESS
-				|| ball.x >= canvas.getWidth() - ball.radius - THICKNESS
+			if (ball.x <= ball.radius + wall.THICKNESS
+				|| ball.x >= canvas.getWidth() - ball.radius - wall.THICKNESS
 			) {
 				return 1;
 			}
-			else if (ball.y <= ball.radius + THICKNESS
-				|| ball.y >= canvas.getHeight() - ball.radius - THICKNESS) {
+			else if (ball.y <= ball.radius + wall.THICKNESS
+				|| ball.y >= canvas.getHeight() - ball.radius - wall.THICKNESS) {
 				return -1;
 			}
 
@@ -26,11 +25,11 @@ loader.addModule('wall', 'canvas', function (canvas) {
 			ctx.lineTo(canvas.getWidth(), canvas.getHeight());
 			ctx.lineTo(0, canvas.getHeight());
 			ctx.lineTo(0, 0);
-			ctx.lineTo(THICKNESS, THICKNESS);
-			ctx.lineTo(THICKNESS, canvas.getWidth() - THICKNESS);
-			ctx.lineTo(canvas.getWidth() - THICKNESS, canvas.getWidth() - THICKNESS);
-			ctx.lineTo(canvas.getWidth() - THICKNESS, THICKNESS);
-			ctx.lineTo(THICKNESS, THICKNESS);
+			ctx.lineTo(wall.THICKNESS, wall.THICKNESS);
+			ctx.lineTo(wall.THICKNESS, canvas.getHeight() - wall.THICKNESS);
+			ctx.lineTo(canvas.getWidth() - wall.THICKNESS, canvas.getHeight() - wall.THICKNESS);
+			ctx.lineTo(canvas.getWidth() - wall.THICKNESS, wall.THICKNESS);
+			ctx.lineTo(wall.THICKNESS, wall.THICKNESS);
 		}
 	};
 
