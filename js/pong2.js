@@ -61,7 +61,7 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		targets[0].update();
 
 		balls[0].testCollision(targets);
-		if (settings.options.wallBoundaries) {
+		if (settings.wallBoundaries) {
 			// 0 if no collision,
 			// 1 if collision vertical wall
 			// -1 if collision horizontal wall
@@ -82,7 +82,7 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		balls[0].draw();
 		targets[0].draw();
 
-		if (settings.options.wallBoundaries) {
+		if (settings.wallBoundaries) {
 			wall.draw();
 		}
 
@@ -94,6 +94,7 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		B.Events.on('click', null, click);
 		B.Events.on('targetDisappeared', null, targetDisappearedEvent);
 		B.Events.on('targetCollided', null, targetDisappearedEvent);
+		B.Events.on('wallsAppeared', null, startWallCountDown);
 	}
 
 	function click(x, y) {
@@ -109,5 +110,18 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		targets.splice(targets.indexOf(target), 1);
 		createTarget(balls[0]);
 		balls[0].boost = true;
+		if (Math.random() > settings.PROBA_ENABLE_WALLS) {
+			settings.wallBoundaries = true;
+			B.Events.fire('wallsAppeared');
+		}
+	}
+
+	function startWallCountDown() {
+		setTimeout(
+			function () {
+				settings.wallBoundaries = false;
+			},
+			settings.DURATION_WALLS
+		)
 	}
 });
