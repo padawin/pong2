@@ -39,12 +39,16 @@ function (settings, canvas, debug, wall, B) {
 			ball.direction = directionToBall;
 		}
 		else if (directionToBall != ball.direction) {
+			let angularSpeed = settings.BALL_ANGULAR_SPEED;
+			if (ball.boost) {
+				angularSpeed /= 2;
+			}
 			// find the smallest angle change to go to the ball
 			if (deltaDirections > Math.PI || deltaDirections > -Math.PI && deltaDirections < 0) {
-				ball.direction -= settings.BALL_ANGULAR_SPEED;
+				ball.direction -= angularSpeed;
 			}
 			else {
-				ball.direction += settings.BALL_ANGULAR_SPEED;
+				ball.direction += angularSpeed;
 			}
 			ball.direction = (Math.PI * 2 + ball.direction) % (Math.PI * 2)
 		}
