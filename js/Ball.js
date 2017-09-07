@@ -14,16 +14,6 @@ function (settings, canvas, debug, wall) {
 		return targets[0];
 	}
 
-	function _updateFrozen(ball) {
-		if (ball.frozen) {
-			ball.frozenCountDown--;
-			if (ball.frozenCountDown <= 0) {
-				ball.frozenCountDown = 0;
-				ball.frozen = false;
-			}
-		}
-	}
-
 	function _updateDirection(ball, targets) {
 		let target = _findClosestTarget(ball, targets);
 		let directionToBall = (2 * Math.PI + Math.atan2(
@@ -105,13 +95,10 @@ function (settings, canvas, debug, wall) {
 				radius: radius,
 				speed: settings.BALL_CRUISE_SPEED,
 				direction: Math.random() * (Math.PI * 2),
-				boost: false,
-				frozen: false,
-				frozenCountDown: 0
+				boost: false
 			};
 
 			ball.update = function (targets) {
-				_updateFrozen(ball);
 				_updateDirection(ball, targets);
 				_updatePosition(ball);
 
@@ -150,10 +137,6 @@ function (settings, canvas, debug, wall) {
 
 			ball.isColliding = function (targets) {
 				for (let target of targets) {
-					if (ball.frozen) {
-						return;
-					}
-
 					let distanceBallTarget = Math.sqrt(
 						Math.pow(target.y - ball.y, 2) +
 						Math.pow(target.x - ball.x, 2)
@@ -162,8 +145,6 @@ function (settings, canvas, debug, wall) {
 					if (distanceBallTarget < target.radius + ball.radius) {
 						if (target.expands) {
 							ball.direction = (ball.direction + Math.PI) % (Math.PI * 2);
-							ball.frozen = true;
-							ball.frozenCountDown = 60;
 						}
 						return target;
 					}
