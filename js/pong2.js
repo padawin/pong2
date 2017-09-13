@@ -116,6 +116,10 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 	}
 
 	function startWallCountDown() {
+		if (settings.wallBoundaries) {
+			return;
+		}
+
 		settings.wallBoundaries = true;
 		setTimeout(
 			function () {
