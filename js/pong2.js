@@ -1,8 +1,8 @@
 var __DEBUG__ = false;
 loader.executeModule('main',
 'B', 'canvas', 'screenSize', 'Ball', 'Target', 'settings', 'resourceManager', 'wall',
-'debug',
-function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, debug) {
+'debug', 'score',
+function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, debug, score) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -72,6 +72,8 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 				balls[0].bounce(way);
 			}
 		}
+
+		score.update();
 	}
 
 	function draw() {
@@ -85,6 +87,8 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		if (settings.wallBoundaries) {
 			wall.draw();
 		}
+
+		score.draw();
 
 		context.fill();
 		context.stroke();
