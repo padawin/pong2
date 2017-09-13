@@ -111,12 +111,16 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 		createTarget(balls[0]);
 		balls[0].boost = true;
 		if (Math.random() > settings.PROBA_ENABLE_WALLS) {
-			settings.wallBoundaries = true;
 			B.Events.fire('wallsAppeared');
 		}
 	}
 
 	function startWallCountDown() {
+		if (settings.wallBoundaries) {
+			return;
+		}
+
+		settings.wallBoundaries = true;
 		setTimeout(
 			function () {
 				settings.wallBoundaries = false;
