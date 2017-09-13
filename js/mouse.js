@@ -87,7 +87,6 @@ loader.addModule('mouse', 'B', 'canvas', function (B, canvas) {
 
 		if (isMouseMoving) {
 			isMouseMoving = false;
-			return;
 		}
 
 		B.Events.fire('click', eventToCanvasCoordinates(event));
