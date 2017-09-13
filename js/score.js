@@ -21,7 +21,7 @@ loader.addModule('score', 'B', 'canvas', function (B, canvas) {
 		},
 		draw: function () {
 			canvas.getContext().font = '24px sans';
-			canvas.getContext().fillText("Points: " + points, 50, 50);
+			canvas.getContext().fillText("Points: " + points, 50, 100);
 
 			canvas.getContext().font = '18px sans';
 			for (let hit of latestHits) {

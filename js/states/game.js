@@ -1,6 +1,6 @@
 loader.addModule('gameState',
-'Ball', 'Target', 'canvas', 'B', 'settings', 'score', 'wall',
-function (Ball, Target, canvas, B, settings, score, wall) {
+'Ball', 'Target', 'canvas', 'B', 'settings', 'score', 'wall', 'lives',
+function (Ball, Target, canvas, B, settings, score, wall, lives) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -81,6 +81,7 @@ function (Ball, Target, canvas, B, settings, score, wall) {
 				wall.draw();
 			}
 
+			lives.draw();
 			score.draw();
 
 			context.fill();
