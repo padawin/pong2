@@ -5,13 +5,29 @@ loader.addModule('score', 'B', 'canvas', function (B, canvas) {
 	 * Module to manage the scores
 	 */
 
+	const MAX_AGE_POINT = 1000;
+
 	let combo = 0;
 	let highestCombo = combo;
 	let points = 0;
+
+	let latestHits = [];
+
 	let score = {
+		update: function () {
+			latestHits = latestHits.filter(function (hit) {
+				return Date.now() - hit.age < MAX_AGE_POINT;
+			});
+		},
 		draw: function () {
 			canvas.getContext().font = '24px sans';
 			canvas.getContext().fillText("Points: " + points, 50, 50);
+
+			canvas.getContext().font = '18px sans';
+			for (let hit of latestHits) {
+				canvas.getContext().fillText(hit.points, hit.x, hit.y);
+				hit.y--;
+			}
 		}
 	};
 
@@ -25,7 +41,14 @@ loader.addModule('score', 'B', 'canvas', function (B, canvas) {
 		}
 
 		combo++;
-		points += combo * 10;
+		let currPoints = combo * 10;
+		latestHits.push({
+			age: Date.now(),
+			points: currPoints,
+			x: target.x,
+			y: target.y
+		});
+		points += currPoints;
 		if (combo > highestCombo) {
 			highestCombo = combo;
 		}

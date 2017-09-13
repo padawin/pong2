@@ -72,6 +72,8 @@ function (B, canvas, screenSize, Ball, Target, settings, resourceManager, wall, 
 				balls[0].bounce(way);
 			}
 		}
+
+		score.update();
 	}
 
 	function draw() {
