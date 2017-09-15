@@ -14,7 +14,7 @@ function (score, canvas, B) {
 			score.drawPoints(60, 140);
 			score.drawMaxCombo(60, 180);
 		},
-		click: function (x, y) {
+		click: function () {
 			B.Events.fire('changeState', ['game']);
 		}
 	};
