@@ -1,6 +1,6 @@
 loader.addModule('gameState',
-'Ball', 'Target', 'canvas', 'B', 'settings', 'score', 'wall',
-function (Ball, Target, canvas, B, settings, score, wall) {
+'Ball', 'Target', 'canvas', 'B', 'settings', 'score', 'wall', 'lives',
+function (Ball, Target, canvas, B, settings, score, wall, lives) {
 	"use strict";
 
 	let context = canvas.getContext();
@@ -24,6 +24,10 @@ function (Ball, Target, canvas, B, settings, score, wall) {
 		}
 	}
 
+	function lose() {
+		B.Events.fire('changeState', ['lose']);
+	}
+
 	function startWallCountDown() {
 		if (settings.wallBoundaries) {
 			return;
@@ -42,9 +46,12 @@ function (Ball, Target, canvas, B, settings, score, wall) {
 		init: function () {
 			createBall();
 			createTarget(balls[0]);
+			lives.init();
+			score.init();
 			B.Events.on('targetDisappeared', null, targetDisappearedEvent);
 			B.Events.on('targetCollided', null, targetDisappearedEvent);
 			B.Events.on('wallsAppeared', null, startWallCountDown);
+			B.Events.on('lost', null, lose);
 		},
 		update: function () {
 			let ballOldPosition = {
@@ -81,7 +88,9 @@ function (Ball, Target, canvas, B, settings, score, wall) {
 				wall.draw();
 			}
 
-			score.draw();
+			lives.draw();
+			score.drawPoints(50, 100);
+			score.drawLatestPoints();
 
 			context.fill();
 			context.stroke();

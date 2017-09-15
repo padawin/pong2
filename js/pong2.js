@@ -1,13 +1,17 @@
 var __DEBUG__ = false;
 loader.executeModule('main',
-'B', 'canvas', 'screenSize', 'resourceManager', 'debug', 'gameState',
-function (B, canvas, screenSize, resourceManager, debug, gameState) {
+'B', 'canvas', 'screenSize', 'resourceManager', 'debug', 'gameState', 'loseState',
+function (B, canvas, screenSize, resourceManager, debug, gameState, loseState) {
 	"use strict";
 
 	let timePreviousFrame;
 	let resources = {};
 
-	let state = gameState;
+	let state;
+	const statesMapping = {
+		'game': gameState,
+		'lose': loseState
+	};
 
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
@@ -15,10 +19,25 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 	resourceManager.load(function() {
 		timePreviousFrame = Date.now();
 		canvas.resize(screenSize.get());
-		B.Events.on('click', null, state.click);
-		state.init();
+		changeState('game');
+		B.Events.on('click', null, click);
+		B.Events.on('changeState', null, changeState);
 		runGame();
 	});
+
+	function changeState(to) {
+		if (statesMapping[to]) {
+			if (state && state.terminate) {
+				state.terminate();
+			}
+			state = statesMapping[to];
+			state.init && state.init();
+		}
+	}
+
+	function click(x, y) {
+		state.click(x, y);
+	}
 
 	function runGame() {
 		// start main loop
@@ -30,8 +49,8 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 		if (delta > INTERVAL) {
 			timePreviousFrame = now - (delta % INTERVAL);
 
-			state.update();
-			state.draw();
+			state.update && state.update();
+			state.draw && state.draw();
 			debug.processDebug();
 		}
 	}
