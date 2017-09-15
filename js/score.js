@@ -7,13 +7,15 @@ loader.addModule('score', 'B', 'canvas', function (B, canvas) {
 
 	const MAX_AGE_POINT = 1000;
 
-	let combo = 0;
-	let highestCombo = combo;
-	let points = 0;
-
-	let latestHits = [];
+	let combo, highestCombo, points, latestHits = [];
 
 	let score = {
+		init: function () {
+			points = 0;
+			combo = 0;
+			highestCombo = combo;
+			latestHits = [];
+		},
 		update: function () {
 			latestHits = latestHits.filter(function (hit) {
 				return Date.now() - hit.age < MAX_AGE_POINT;

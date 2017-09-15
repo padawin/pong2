@@ -46,6 +46,8 @@ function (Ball, Target, canvas, B, settings, score, wall, lives) {
 		init: function () {
 			createBall();
 			createTarget(balls[0]);
+			lives.init();
+			score.init();
 			B.Events.on('targetDisappeared', null, targetDisappearedEvent);
 			B.Events.on('targetCollided', null, targetDisappearedEvent);
 			B.Events.on('wallsAppeared', null, startWallCountDown);
