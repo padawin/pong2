@@ -25,8 +25,11 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 
 	function changeState(to) {
 		if (statesMapping[to]) {
+			if (state && state.terminate) {
+				state.terminate();
+			}
 			state = statesMapping[to];
-			state.init();
+			state.init && state.init();
 		}
 	}
 
@@ -40,8 +43,8 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 		if (delta > INTERVAL) {
 			timePreviousFrame = now - (delta % INTERVAL);
 
-			state.update();
-			state.draw();
+			state.update && state.update();
+			state.draw && state.draw();
 			debug.processDebug();
 		}
 	}
