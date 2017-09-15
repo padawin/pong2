@@ -24,6 +24,10 @@ function (Ball, Target, canvas, B, settings, score, wall, lives) {
 		}
 	}
 
+	function lose() {
+		B.Events.fire('changeState', ['lose']);
+	}
+
 	function startWallCountDown() {
 		if (settings.wallBoundaries) {
 			return;
@@ -45,6 +49,7 @@ function (Ball, Target, canvas, B, settings, score, wall, lives) {
 			B.Events.on('targetDisappeared', null, targetDisappearedEvent);
 			B.Events.on('targetCollided', null, targetDisappearedEvent);
 			B.Events.on('wallsAppeared', null, startWallCountDown);
+			B.Events.on('lost', null, lose);
 		},
 		update: function () {
 			let ballOldPosition = {
