@@ -87,7 +87,8 @@ function (Ball, Target, canvas, B, settings, score, wall, lives) {
 			}
 
 			lives.draw();
-			score.draw();
+			score.drawPoints(50, 100);
+			score.drawLatestPoints();
 
 			context.fill();
 			context.stroke();

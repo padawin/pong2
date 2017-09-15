@@ -19,10 +19,11 @@ loader.addModule('score', 'B', 'canvas', function (B, canvas) {
 				return Date.now() - hit.age < MAX_AGE_POINT;
 			});
 		},
-		draw: function () {
+		drawPoints: function (x, y) {
 			canvas.getContext().font = '24px sans';
-			canvas.getContext().fillText("Points: " + points, 50, 100);
-
+			canvas.getContext().fillText("Points: " + points, x, y);
+		},
+		drawLatestPoints: function () {
 			canvas.getContext().font = '18px sans';
 			for (let hit of latestHits) {
 				canvas.getContext().fillText(hit.points, hit.x, hit.y);
