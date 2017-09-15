@@ -7,7 +7,10 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 	let timePreviousFrame;
 	let resources = {};
 
-	let state = gameState;
+	let state;
+	const statesMapping = {
+		'game': gameState
+	};
 
 	const MAX_FPS = 60,
 		INTERVAL = 1000 / MAX_FPS;
@@ -15,10 +18,17 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 	resourceManager.load(function() {
 		timePreviousFrame = Date.now();
 		canvas.resize(screenSize.get());
+		changeState('game');
 		B.Events.on('click', null, state.click);
-		state.init();
 		runGame();
 	});
+
+	function changeState(to) {
+		if (statesMapping[to]) {
+			state = statesMapping[to];
+			state.init();
+		}
+	}
 
 	function runGame() {
 		// start main loop
