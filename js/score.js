@@ -23,6 +23,14 @@ loader.addModule('score', 'B', 'canvas', function (B, canvas) {
 			canvas.getContext().font = '24px sans';
 			canvas.getContext().fillText("Points: " + points, x, y);
 		},
+		drawMaxCombo: function (x, y) {
+			canvas.getContext().font = '24px sans';
+			canvas.getContext().fillText(
+				"Highest bounce chaining: " + highestCombo,
+				x,
+				y
+			);
+		},
 		drawLatestPoints: function () {
 			canvas.getContext().font = '18px sans';
 			for (let hit of latestHits) {
