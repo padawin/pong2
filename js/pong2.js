@@ -1,7 +1,7 @@
 var __DEBUG__ = false;
 loader.executeModule('main',
-'B', 'canvas', 'screenSize', 'resourceManager', 'debug', 'gameState',
-function (B, canvas, screenSize, resourceManager, debug, gameState) {
+'B', 'canvas', 'screenSize', 'resourceManager', 'debug', 'gameState', 'loseState',
+function (B, canvas, screenSize, resourceManager, debug, gameState, loseState) {
 	"use strict";
 
 	let timePreviousFrame;
@@ -9,7 +9,8 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 
 	let state;
 	const statesMapping = {
-		'game': gameState
+		'game': gameState,
+		'lose': loseState
 	};
 
 	const MAX_FPS = 60,
@@ -20,6 +21,7 @@ function (B, canvas, screenSize, resourceManager, debug, gameState) {
 		canvas.resize(screenSize.get());
 		changeState('game');
 		B.Events.on('click', null, state.click);
+		B.Events.on('changeState', null, changeState);
 		runGame();
 	});
 
