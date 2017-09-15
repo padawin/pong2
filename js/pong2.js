@@ -20,7 +20,7 @@ function (B, canvas, screenSize, resourceManager, debug, gameState, loseState) {
 		timePreviousFrame = Date.now();
 		canvas.resize(screenSize.get());
 		changeState('game');
-		B.Events.on('click', null, state.click);
+		B.Events.on('click', null, click);
 		B.Events.on('changeState', null, changeState);
 		runGame();
 	});
@@ -33,6 +33,10 @@ function (B, canvas, screenSize, resourceManager, debug, gameState, loseState) {
 			state = statesMapping[to];
 			state.init && state.init();
 		}
+	}
+
+	function click(x, y) {
+		state.click(x, y);
 	}
 
 	function runGame() {
